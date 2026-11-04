@@ -1,0 +1,31 @@
+
+
+name: tester
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write # lets the job request an OIDC token from GitHub
+  contents: read
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exchange the GitHub OIDC token for AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: tester
+        run: aws sts get-caller-identity
+
+      - name: Allowed by the role
+        run: aws s3 ls
+
+      - name: Not allowed by the role (expected to fail)
+        run: aws ec2 describe-instances
