@@ -10,4 +10,4 @@ Walk through ONE request end to end, numbered: what the user does, which service
 
 [Your answer] 
 
-![alt text](image.png)
+![alt text](/static/images/image.png)
